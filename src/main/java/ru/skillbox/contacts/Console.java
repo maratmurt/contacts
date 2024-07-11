@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 @Component
@@ -46,6 +47,12 @@ public class Console implements ApplicationRunner {
                     }
                 }
                 case "4" -> {
+                    try {
+                        contactsService.write();
+                        System.out.println("Данные сохранены");
+                    } catch (FileNotFoundException e) {
+                        System.err.println("Файл не найден");
+                    }
                 }
                 case "0" -> {
                     running = false;

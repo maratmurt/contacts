@@ -3,6 +3,8 @@ package ru.skillbox.contacts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Component
@@ -36,5 +38,22 @@ public class ContactsService {
                     .append(c.getEmail());
         });
         System.out.println(builder);
+    }
+
+    public void write() throws FileNotFoundException {
+        StringBuilder contactsString = new StringBuilder();
+        contacts.forEach(c -> {
+            if (!contactsString.isEmpty()) {
+                contactsString.append("\n");
+            }
+            contactsString.append(c.getFullName())
+                    .append(";")
+                    .append(c.getPhoneNumber())
+                    .append(";")
+                    .append(c.getEmail());
+        });
+        try (PrintWriter writer = new PrintWriter("data.txt")) {
+            writer.write(contactsString.toString());
+        }
     }
 }

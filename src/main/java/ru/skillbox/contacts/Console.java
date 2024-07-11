@@ -35,8 +35,11 @@ public class Console implements ApplicationRunner {
                 case "2" -> {
                     System.out.println("Введите данные");
                     String contactData = scanner.nextLine();
-                    if (contactsService.add(contactData)) {
+                    try {
+                        contactsService.add(contactData);
                         System.out.println("Контакт добавлен");
+                    } catch (AddContactException e) {
+                        System.err.println(e.getMessage());
                     }
                 }
                 case "3" -> {
@@ -57,6 +60,9 @@ public class Console implements ApplicationRunner {
                 case "0" -> {
                     running = false;
                     System.out.println("До встречи!");
+                }
+                default -> {
+                    System.err.println("Не корректный ввод!\n");
                 }
             }
         }

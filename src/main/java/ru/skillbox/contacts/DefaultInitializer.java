@@ -26,6 +26,12 @@ public class DefaultInitializer {
         ClassPathResource resource = new ClassPathResource(filePath);
         File file = resource.getFile();
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        reader.lines().forEach(service::add);
+        reader.lines().forEach(contactData -> {
+            try {
+                service.add(contactData);
+            } catch (AddContactException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+        });
     }
 }

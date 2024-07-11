@@ -30,7 +30,7 @@ public class Console implements ApplicationRunner {
 
             switch (command) {
                 case "1" -> {
-                    contactsService.printAll();
+                    contactsService.print();
                 }
                 case "2" -> {
                     System.out.println("Введите данные");

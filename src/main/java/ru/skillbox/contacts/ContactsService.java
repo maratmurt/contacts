@@ -29,7 +29,7 @@ public class ContactsService {
         return contacts.removeIf(c -> email.equals(c.getEmail()));
     }
 
-    public void printAll() {
+    public void print() {
         StringBuilder builder = new StringBuilder();
         contacts.forEach(c -> {
             if (!builder.isEmpty()) {

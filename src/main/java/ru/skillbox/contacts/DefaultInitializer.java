@@ -4,12 +4,13 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 @Component
 @Profile("init")
@@ -22,7 +23,9 @@ public class DefaultInitializer {
 
     @PostConstruct
     public void initialize() throws IOException {
-        List<String> contacts = Files.readAllLines(Path.of(filePath));
-        contacts.forEach(service::add);
+        ClassPathResource resource = new ClassPathResource(filePath);
+        File file = resource.getFile();
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        reader.lines().forEach(service::add);
     }
 }

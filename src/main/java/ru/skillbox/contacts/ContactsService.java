@@ -1,6 +1,7 @@
 package ru.skillbox.contacts;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
@@ -11,6 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContactsService {
     private final List<Contact> contacts;
+
+    @Value("${app.write_path}")
+    private String writePath;
 
     public boolean add(String contactData) {
         String[] fields = contactData.split(";");
@@ -52,7 +56,7 @@ public class ContactsService {
                     .append(";")
                     .append(c.getEmail());
         });
-        try (PrintWriter writer = new PrintWriter("data.txt")) {
+        try (PrintWriter writer = new PrintWriter(writePath)) {
             writer.write(contactsString.toString());
         }
     }

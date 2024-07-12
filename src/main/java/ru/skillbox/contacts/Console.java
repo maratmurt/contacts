@@ -37,6 +37,10 @@ public class Console implements ApplicationRunner {
     private void handleInput(String command) {
         switch (command) {
             case "1" -> {
+                if (contactsService.contactsCount() == 0) {
+                    System.out.println("Список контактов пуст");
+                    break;
+                }
                 contactsService.print();
             }
             case "2" -> {

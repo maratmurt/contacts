@@ -100,4 +100,8 @@ public class ContactsService {
             writer.write(contactsString.toString());
         }
     }
+
+    public int contactsCount() {
+        return contacts.size();
+    }
 }

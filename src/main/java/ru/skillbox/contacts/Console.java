@@ -19,7 +19,7 @@ public class Console implements ApplicationRunner {
 
         while (running) {
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Выберите действие:\n" +
+            System.out.println("\nВыберите действие:\n" +
                     "1 - Просмотреть все контакты\n" +
                     "2 - Добавить контакт\n" +
                     "3 - Удалить контакт\n" +
@@ -33,7 +33,8 @@ public class Console implements ApplicationRunner {
                     contactsService.print();
                 }
                 case "2" -> {
-                    System.out.println("Введите данные");
+                    System.out.println("Введите данные в следующем формате:\n" +
+                            "Фамилия Имя Отчество;+890999999;user@domain.name");
                     String contactData = scanner.nextLine();
                     try {
                         contactsService.add(contactData);
@@ -47,6 +48,8 @@ public class Console implements ApplicationRunner {
                     String email = scanner.nextLine();
                     if (contactsService.delete(email)) {
                         System.out.println("Контакт удалён");
+                    } else {
+                        System.err.println("Контакт не найден!");
                     }
                 }
                 case "4" -> {

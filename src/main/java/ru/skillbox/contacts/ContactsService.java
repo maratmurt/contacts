@@ -22,24 +22,31 @@ public class ContactsService {
         Contact newContact = new Contact();
 
         String fullName = fields[0];
+        if (isValidName(fullName)) {
+            newContact.setFullName(fullName);
+        }
+
+        String phoneNumber = fields[1];
+        if (isValidAndNotPresentPhoneNumber(phoneNumber)) {
+            newContact.setPhoneNumber(phoneNumber);
+        }
+
+        String email = fields[2].toLowerCase();
+        if (isValidAndNotPresentEmail(email)) {
+            newContact.setEmail(email);
+        }
+
+        contacts.add(newContact);
+    }
+
+    private boolean isValidName(String fullName) throws AddContactException {
         if (!fullName.matches("([А-Яа-яЁё]+\\s){2}[А-Яа-яЁё]+")) {
             throw new AddContactException("Введено не корректное Ф.И.О.");
         }
-        newContact.setFullName(fullName);
+        return true;
+    }
 
-        String phoneNumber = fields[1];
-        if (!phoneNumber.matches("\\+\\d+")) {
-            throw new AddContactException("Введён не корректный номер телефона");
-        }
-        Optional<Contact> samePhoneNumberContact = contacts.stream()
-                .filter(contact -> contact.getPhoneNumber().equals(phoneNumber))
-                .findAny();
-        if (samePhoneNumberContact.isPresent()) {
-            throw new AddContactException("Номер телефона совпадает с: " + samePhoneNumberContact.get());
-        }
-        newContact.setPhoneNumber(phoneNumber);
-
-        String email = fields[2].toLowerCase();
+    private boolean isValidAndNotPresentEmail(String email) throws AddContactException {
         if (!email.matches("\\w+@\\w+\\.\\w+")) {
             throw new AddContactException("Введён не корректный адрес электронной почты");
         }
@@ -49,9 +56,20 @@ public class ContactsService {
         if (sameEmailContact.isPresent()) {
             throw new AddContactException("Электронная почта совпадает с: " + sameEmailContact.get());
         }
-        newContact.setEmail(email);
+        return true;
+    }
 
-        contacts.add(newContact);
+    private boolean isValidAndNotPresentPhoneNumber(String phoneNumber) throws AddContactException {
+        if (!phoneNumber.matches("\\+\\d+")) {
+            throw new AddContactException("Введён не корректный номер телефона");
+        }
+        Optional<Contact> samePhoneNumberContact = contacts.stream()
+                .filter(contact -> contact.getPhoneNumber().equals(phoneNumber))
+                .findAny();
+        if (samePhoneNumberContact.isPresent()) {
+            throw new AddContactException("Номер телефона совпадает с: " + samePhoneNumberContact.get());
+        }
+        return true;
     }
 
     public boolean delete(String email) {

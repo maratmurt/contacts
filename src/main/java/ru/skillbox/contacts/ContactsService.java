@@ -19,6 +19,10 @@ public class ContactsService {
 
     public void add(String contactData) throws AddContactException {
         String[] fields = contactData.split(";");
+        if (fields.length != 3) {
+            throw new AddContactException("Неверный формат ввода!");
+        }
+
         Contact newContact = new Contact();
 
         String fullName = fields[0];
